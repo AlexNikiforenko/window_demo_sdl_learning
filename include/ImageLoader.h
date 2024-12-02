@@ -15,6 +15,8 @@ public:
     void handleInput();
     void clear();
 private:
+    const int SCREEN_WIDTH = 600;
+    const int SCREEN_HEIGHT = 400;
     SDL_Window* window = nullptr;
     SDL_Surface* screen_surface = nullptr;
     SDL_Surface* img = nullptr;

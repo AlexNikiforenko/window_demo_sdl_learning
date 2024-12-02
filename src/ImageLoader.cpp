@@ -6,7 +6,8 @@ bool ImageLoader::init() {
         SDL_Quit();
         return false;
     }
-    window = SDL_CreateWindow("Naruto", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 400, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Naruto", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+            SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window) {
         std::cout << "SDL WINDOW INIT ERROR: " << SDL_GetError() << std::endl;
         return false;
@@ -32,18 +33,34 @@ void ImageLoader::loadImagesFromDir() {
 }
 
 SDL_Surface* ImageLoader::loadSurface(std::string path) {
+    SDL_Surface* optimized_surface = nullptr;
     img = SDL_LoadBMP(path.c_str());
+
     if (!img) {
         std::cout << "Unable to load image: " <<  path << " " << SDL_GetError() << std::endl;
         return nullptr;
     }
+    optimized_surface = SDL_ConvertSurface(img, img->format, 0);
+    if (!optimized_surface) {
+        std::cout << "Unable to optimize image: " <<  path << " " << SDL_GetError() << std::endl;
+    }
+    SDL_FreeSurface(img);
     std::cout << path << " was succesfully loaded" << std::endl;
-    return img;
+    return optimized_surface;
 }
 
 void ImageLoader::blitImage() {
     std::cout << "blit\n";
-    SDL_BlitSurface(imgs[img_idx], nullptr, screen_surface, nullptr);
+
+    SDL_Rect stretch_rect;
+    stretch_rect.x = 0;
+    stretch_rect.y = 0;
+    stretch_rect.w = SCREEN_WIDTH;
+    stretch_rect.h = SCREEN_HEIGHT;
+
+    SDL_BlitScaled(imgs[img_idx], nullptr, screen_surface, &stretch_rect);
+
+    //SDL_BlitSurface(imgs[img_idx], nullptr, screen_surface, nullptr); // makes image non-stretch
     SDL_UpdateWindowSurface(window);
 }
 
