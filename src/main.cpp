@@ -3,9 +3,7 @@
 int main(int argc, char* argv[]) {
     ImageLoader imgLoader;
     imgLoader.init();
-    //imgLoader.loadMedia();
-    imgLoader.loadImagesFromDir();
-    imgLoader.blitImage();
+    imgLoader.loadTexturesFromDir();
     imgLoader.handleInput();
-    imgLoader.clear();
+    imgLoader.close();
 }

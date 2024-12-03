@@ -11,19 +11,21 @@
 class ImageLoader {
 public:
     bool init();
-    void loadImagesFromDir();
-    SDL_Surface* loadSurface(std::string path);
-    void blitImage();
+    void loadTexturesFromDir();
+    SDL_Texture* loadTexture(std::string path);
+
+    void renderImage();
     void handleInput();
-    void clear();
+    void close();
 private:
     const int SCREEN_WIDTH = 600;
     const int SCREEN_HEIGHT = 400;
+
     SDL_Window* window = nullptr;
     SDL_Surface* screen_surface = nullptr;
-    SDL_Surface* img = nullptr;
+    SDL_Renderer* renderer = nullptr;
 
-    std::vector<SDL_Surface*> imgs;
+    std::vector<SDL_Texture*> textures;
     int img_idx = 0;
 };
 

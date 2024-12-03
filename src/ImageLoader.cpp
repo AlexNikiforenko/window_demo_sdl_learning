@@ -1,20 +1,33 @@
 #include "ImageLoader.h"
 
 bool ImageLoader::init() {
+    // Initialize SDL
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-        std::cout << "SDL INIT ERROR: " << SDL_GetError() << std::endl;
+        std::cout << "SDL couldn't be initialized! SDL error: " << SDL_GetError() << std::endl;
         SDL_Quit();
         return false;
     }
+
+    // Create window
     window = SDL_CreateWindow("Naruto", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window) {
-        std::cout << "SDL WINDOW INIT ERROR: " << SDL_GetError() << std::endl;
+        std::cout << "Window couldn't be created! SDL Error: " << SDL_GetError() << std::endl;
         return false;
     }
+
+    // Create renderer for window
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
+        std::cout << "Renderer couldn't be created! SDL Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+
+    // Initialize image loading
     int img_flags = IMG_INIT_PNG;
     if (!(IMG_Init(img_flags) & img_flags)) {
-        std::cout << "SDL IMG INIT ERROR: " << SDL_GetError() << std::endl;
+        std::cout << "SDL_image couldn't initialize! SDL_image error: " << SDL_GetError() << std::endl;
         return false;
     }
 
@@ -22,52 +35,47 @@ bool ImageLoader::init() {
     return true;
 }
 
-void ImageLoader::loadImagesFromDir() {
+void ImageLoader::loadTexturesFromDir() {
     namespace fs = std::filesystem;
     std::vector<fs::directory_entry> dirents{fs::directory_iterator("../resources/"), fs::directory_iterator{}};
 
-    imgs.reserve(dirents.size());
+    textures.reserve(dirents.size());
 
     for (const auto& dir: dirents) {
-        SDL_Surface* img = loadSurface(dir.path().string());
-        if (!img) {
+        SDL_Texture* texture = loadTexture(dir.path().string());
+        if (!texture) {
             std::cout << dir.path().string() << " wasn't succesfully load" << std::endl;
             continue;
         }
-        imgs.push_back(img);
+        textures.push_back(texture);
     }
 }
 
-SDL_Surface* ImageLoader::loadSurface(std::string path) {
-    SDL_Surface* optimized_surface = nullptr;
-    img = IMG_Load(path.c_str());
+SDL_Texture* ImageLoader::loadTexture(std::string path) {
+    SDL_Texture* new_texture = nullptr;
 
-    if (!img) {
-        std::cout << "Unable to load image: " <<  path << " " << SDL_GetError() << std::endl;
+    SDL_Surface* loaded_surface = IMG_Load(path.c_str());
+    if (!loaded_surface) {
+        std::cout << "Unable to load image from " <<  path << "! SDL Error: " << SDL_GetError() << std::endl;
         return nullptr;
     }
-    optimized_surface = SDL_ConvertSurface(img, img->format, 0);
-    if (!optimized_surface) {
-        std::cout << "Unable to optimize image: " <<  path << " " << SDL_GetError() << std::endl;
+
+    new_texture = SDL_CreateTextureFromSurface(renderer, loaded_surface);
+    if (!new_texture) {
+        std::cout << "Unable to create texture from " <<  path << "! SDL Error: " << SDL_GetError() << std::endl;
+        return nullptr;
     }
-    SDL_FreeSurface(img);
-    std::cout << path << " was succesfully loaded" << std::endl;
-    return optimized_surface;
+    SDL_FreeSurface(loaded_surface);
+
+    return new_texture;
 }
 
-void ImageLoader::blitImage() {
-    std::cout << "blit\n";
+void ImageLoader::renderImage() {
+    std::cout << "rendered\n";
 
-    SDL_Rect stretch_rect;
-    stretch_rect.x = 0;
-    stretch_rect.y = 0;
-    stretch_rect.w = SCREEN_WIDTH;
-    stretch_rect.h = SCREEN_HEIGHT;
-
-    SDL_BlitScaled(imgs[img_idx], nullptr, screen_surface, &stretch_rect);
-
-    //SDL_BlitSurface(imgs[img_idx], nullptr, screen_surface, nullptr); // makes image non-stretch
-    SDL_UpdateWindowSurface(window);
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, textures[img_idx], nullptr, nullptr);
+    SDL_RenderPresent(renderer);
 }
 
 void ImageLoader::handleInput() {
@@ -76,9 +84,8 @@ void ImageLoader::handleInput() {
     while(!quit){
         while(SDL_PollEvent(&e) )
         {
-            if (img_idx < 0) img_idx = imgs.size() - 1;
-            if (img_idx >= imgs.size()) img_idx = 0;
-            //if (img_idx < 0) img_idx = imgs.size() - 1;
+            if (img_idx < 0) img_idx = textures.size() - 1;
+            if (img_idx >= textures.size()) img_idx = 0;
             if(e.type == SDL_QUIT)
                 quit = true;
             if (e.type == SDL_MOUSEBUTTONDOWN) {
@@ -95,19 +102,19 @@ void ImageLoader::handleInput() {
                 }
             }
             std::cout << img_idx << std::endl;
-            blitImage();
+            renderImage();
         }
     }
 }
 
-void ImageLoader::clear() {
-    for (auto& img : imgs) {
-        if (img) {
-            SDL_FreeSurface(img);
-            img = nullptr;
+void ImageLoader::close() {
+    for (auto& texture : textures) {
+        if (texture) {
+            SDL_DestroyTexture(texture);
+            texture = nullptr;
         }
     }
-    imgs.clear();
+    textures.clear();
 
     if (screen_surface) {
         SDL_FreeSurface(screen_surface);
@@ -117,6 +124,11 @@ void ImageLoader::clear() {
         SDL_DestroyWindow(window);
         window = nullptr;
     }
+    if (renderer) {
+        SDL_DestroyRenderer(renderer);
+        renderer = nullptr;
+    }
 
+    IMG_Quit();
     SDL_Quit();
 }
