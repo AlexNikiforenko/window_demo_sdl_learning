@@ -20,7 +20,7 @@ file(GLOB HEADERS "include/*.h")
 add_executable(sdl_demo ${SOURCES} ${HEADERS})
 
 # Линкуем библиотеки SDL2 и SDL2_ttf
-target_link_libraries(sdl_demo SDL2 SDL2_ttf)
+target_link_libraries(sdl_demo SDL2 SDL2_ttf SDL2_image)
 
 target_include_directories(sdl_demo PRIVATE include) # instead of include "include/some_file.h"
 

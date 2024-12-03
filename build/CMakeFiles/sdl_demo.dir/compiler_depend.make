@@ -1010,6 +1010,7 @@ CMakeFiles/sdl_demo.dir/src/ImageLoader.cpp.o: /Users/alexandernikiforenko/Devel
   /opt/homebrew/include/SDL2/SDL_haptic.h \
   /opt/homebrew/include/SDL2/SDL_hidapi.h \
   /opt/homebrew/include/SDL2/SDL_hints.h \
+  /opt/homebrew/include/SDL2/SDL_image.h \
   /opt/homebrew/include/SDL2/SDL_joystick.h \
   /opt/homebrew/include/SDL2/SDL_keyboard.h \
   /opt/homebrew/include/SDL2/SDL_keycode.h \
@@ -2052,6 +2053,7 @@ CMakeFiles/sdl_demo.dir/src/main.cpp.o: /Users/alexandernikiforenko/Developer/Pr
   /opt/homebrew/include/SDL2/SDL_haptic.h \
   /opt/homebrew/include/SDL2/SDL_hidapi.h \
   /opt/homebrew/include/SDL2/SDL_hints.h \
+  /opt/homebrew/include/SDL2/SDL_image.h \
   /opt/homebrew/include/SDL2/SDL_joystick.h \
   /opt/homebrew/include/SDL2/SDL_keyboard.h \
   /opt/homebrew/include/SDL2/SDL_keycode.h \
@@ -2127,6 +2129,8 @@ CMakeFiles/sdl_demo.dir/src/main.cpp.o: /Users/alexandernikiforenko/Developer/Pr
 /opt/homebrew/include/SDL2/SDL_keycode.h:
 
 /opt/homebrew/include/SDL2/SDL_keyboard.h:
+
+/opt/homebrew/include/SDL2/SDL_image.h:
 
 /opt/homebrew/include/SDL2/SDL_hints.h:
 

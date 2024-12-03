@@ -12,6 +12,12 @@ bool ImageLoader::init() {
         std::cout << "SDL WINDOW INIT ERROR: " << SDL_GetError() << std::endl;
         return false;
     }
+    int img_flags = IMG_INIT_PNG;
+    if (!(IMG_Init(img_flags) & img_flags)) {
+        std::cout << "SDL IMG INIT ERROR: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
     screen_surface = SDL_GetWindowSurface(window);
     return true;
 }
@@ -34,7 +40,7 @@ void ImageLoader::loadImagesFromDir() {
 
 SDL_Surface* ImageLoader::loadSurface(std::string path) {
     SDL_Surface* optimized_surface = nullptr;
-    img = SDL_LoadBMP(path.c_str());
+    img = IMG_Load(path.c_str());
 
     if (!img) {
         std::cout << "Unable to load image: " <<  path << " " << SDL_GetError() << std::endl;
