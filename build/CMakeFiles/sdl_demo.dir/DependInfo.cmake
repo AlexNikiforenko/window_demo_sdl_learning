@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/alexandernikiforenko/Developer/Projects/window_demo/src/ImageLoader.cpp" "CMakeFiles/sdl_demo.dir/src/ImageLoader.cpp.o" "gcc" "CMakeFiles/sdl_demo.dir/src/ImageLoader.cpp.o.d"
+  "/Users/alexandernikiforenko/Developer/Projects/window_demo/src/Texture.cpp" "CMakeFiles/sdl_demo.dir/src/Texture.cpp.o" "gcc" "CMakeFiles/sdl_demo.dir/src/Texture.cpp.o.d"
   "/Users/alexandernikiforenko/Developer/Projects/window_demo/src/main.cpp" "CMakeFiles/sdl_demo.dir/src/main.cpp.o" "gcc" "CMakeFiles/sdl_demo.dir/src/main.cpp.o.d"
   )
 

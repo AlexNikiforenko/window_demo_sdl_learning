@@ -153,6 +153,30 @@ src/ImageLoader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sdl_demo.dir/build.make CMakeFiles/sdl_demo.dir/src/ImageLoader.cpp.s
 .PHONY : src/ImageLoader.cpp.s
 
+src/Texture.o: src/Texture.cpp.o
+.PHONY : src/Texture.o
+
+# target to build an object file
+src/Texture.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sdl_demo.dir/build.make CMakeFiles/sdl_demo.dir/src/Texture.cpp.o
+.PHONY : src/Texture.cpp.o
+
+src/Texture.i: src/Texture.cpp.i
+.PHONY : src/Texture.i
+
+# target to preprocess a source file
+src/Texture.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sdl_demo.dir/build.make CMakeFiles/sdl_demo.dir/src/Texture.cpp.i
+.PHONY : src/Texture.cpp.i
+
+src/Texture.s: src/Texture.cpp.s
+.PHONY : src/Texture.s
+
+# target to generate assembly for a file
+src/Texture.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sdl_demo.dir/build.make CMakeFiles/sdl_demo.dir/src/Texture.cpp.s
+.PHONY : src/Texture.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -189,6 +213,9 @@ help:
 	@echo "... src/ImageLoader.o"
 	@echo "... src/ImageLoader.i"
 	@echo "... src/ImageLoader.s"
+	@echo "... src/Texture.o"
+	@echo "... src/Texture.i"
+	@echo "... src/Texture.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

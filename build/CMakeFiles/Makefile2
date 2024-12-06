@@ -81,12 +81,12 @@ clean: CMakeFiles/sdl_demo.dir/clean
 CMakeFiles/sdl_demo.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sdl_demo.dir/build.make CMakeFiles/sdl_demo.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sdl_demo.dir/build.make CMakeFiles/sdl_demo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/alexandernikiforenko/Developer/Projects/window_demo/build/CMakeFiles --progress-num=1,2,3 "Built target sdl_demo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/alexandernikiforenko/Developer/Projects/window_demo/build/CMakeFiles --progress-num=1,2,3,4 "Built target sdl_demo"
 .PHONY : CMakeFiles/sdl_demo.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/sdl_demo.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/alexandernikiforenko/Developer/Projects/window_demo/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/alexandernikiforenko/Developer/Projects/window_demo/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/sdl_demo.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/alexandernikiforenko/Developer/Projects/window_demo/build/CMakeFiles 0
 .PHONY : CMakeFiles/sdl_demo.dir/rule

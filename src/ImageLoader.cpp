@@ -36,81 +36,88 @@ bool ImageLoader::init() {
 }
 
 void ImageLoader::loadTexturesFromDir() {
+    // Get images filepaths from directory
     namespace fs = std::filesystem;
     std::vector<fs::directory_entry> dirents{fs::directory_iterator("../resources/"), fs::directory_iterator{}};
 
     textures.reserve(dirents.size());
 
+    // Load images to textures
     for (const auto& dir: dirents) {
-        SDL_Texture* texture = loadTexture(dir.path().string());
-        if (!texture) {
-            std::cout << dir.path().string() << " wasn't succesfully load" << std::endl;
+        std::string path = dir.path();
+
+        Texture* texture = new Texture;
+        if (!texture->loadFromFile(path, renderer)) {
+            std::cout << path << " wasn't succesfully load" << std::endl;
             continue;
         }
+
         textures.push_back(texture);
+        std::cout << path << " was loaded" << std::endl;
     }
-}
-
-SDL_Texture* ImageLoader::loadTexture(std::string path) {
-    SDL_Texture* new_texture = nullptr;
-
-    SDL_Surface* loaded_surface = IMG_Load(path.c_str());
-    if (!loaded_surface) {
-        std::cout << "Unable to load image from " <<  path << "! SDL Error: " << SDL_GetError() << std::endl;
-        return nullptr;
-    }
-
-    new_texture = SDL_CreateTextureFromSurface(renderer, loaded_surface);
-    if (!new_texture) {
-        std::cout << "Unable to create texture from " <<  path << "! SDL Error: " << SDL_GetError() << std::endl;
-        return nullptr;
-    }
-    SDL_FreeSurface(loaded_surface);
-
-    return new_texture;
 }
 
 void ImageLoader::renderImage() {
+    if (textures.empty()) {
+        std::cout << "No textures available for rendering!" << std::endl;
+        return;
+    }
+
+    if (!textures[img_idx]->isLoaded()) {
+        std::cout << "Texture is null during rendering!" << std::endl;
+        return;
+    }
     std::cout << "rendered\n";
 
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, textures[img_idx], nullptr, nullptr);
+    textures[img_idx]->render(renderer, 0, 0);
     SDL_RenderPresent(renderer);
 }
 
 void ImageLoader::handleInput() {
     SDL_Event e;
     bool quit = false;
+
     while(!quit){
-        while(SDL_PollEvent(&e) )
+        while(SDL_PollEvent(&e))
         {
-            if (img_idx < 0) img_idx = textures.size() - 1;
-            if (img_idx >= textures.size()) img_idx = 0;
             if(e.type == SDL_QUIT)
                 quit = true;
-            if (e.type == SDL_MOUSEBUTTONDOWN) {
-                img_idx++;
-            }
-            else if(e.type == SDL_KEYDOWN) {
-                switch (e.key.keysym.sym) {
-                    case SDLK_RIGHT:
-                        img_idx++;
-                        break;
-                    case SDLK_LEFT:
-                        img_idx--;
-                        break;
-                }
-            }
+
+            handleKeyEvent(e);
+            handleMouseEvent(e);
+
             std::cout << img_idx << std::endl;
+            img_idx = (img_idx + textures.size()) % textures.size(); // keeps bounds of vector correct
             renderImage();
         }
     }
 }
 
+void ImageLoader::handleKeyEvent(SDL_Event& e) {
+    if(e.type == SDL_KEYDOWN) {
+        switch (e.key.keysym.sym) {
+            case SDLK_RIGHT:
+                img_idx++;
+                break;
+            case SDLK_LEFT:
+                img_idx--;
+                break;
+        }
+    }
+}
+
+void ImageLoader::handleMouseEvent(SDL_Event& e) {
+    if (e.type == SDL_MOUSEBUTTONDOWN) {
+        img_idx++;
+    }
+}
+
 void ImageLoader::close() {
+    // Clear all textures from array
     for (auto& texture : textures) {
         if (texture) {
-            SDL_DestroyTexture(texture);
+            delete texture;
             texture = nullptr;
         }
     }
