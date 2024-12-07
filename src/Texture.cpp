@@ -36,6 +36,11 @@ bool Texture::isLoaded() {
     return texture != nullptr;
 }
 
+void Texture::setColor(Uint8 red, Uint8 green, Uint8 blue) {
+    // Modulate texture
+    SDL_SetTextureColorMod(texture, red, green, blue);
+}
+
 void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip) {
     SDL_Rect renderQuad = {x, y, width, height};
 

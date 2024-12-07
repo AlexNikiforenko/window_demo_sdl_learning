@@ -13,6 +13,8 @@ public:
 
     bool loadFromFile(std::string path, SDL_Renderer* renderer);
     bool isLoaded();
+
+    void setColor(Uint8 red, Uint8 green, Uint8 blue);
     void render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip = nullptr);
     void free();
 

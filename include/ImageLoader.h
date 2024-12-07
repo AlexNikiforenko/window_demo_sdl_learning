@@ -12,10 +12,13 @@
 
 class ImageLoader {
 public:
+    ImageLoader();
+    ~ImageLoader();
+
     bool init();
     void loadTexturesFromDir();
 
-    void renderImage();
+    void renderTexture(Texture* texture);
 
     void handleInput();
     void handleKeyEvent(SDL_Event& e);
@@ -31,7 +34,12 @@ private:
     SDL_Renderer* renderer = nullptr;
 
     std::vector<Texture*> textures;
-    int img_idx = 0;
+    int img_idx;
+    Uint8 r;
+    Uint8 g;
+    Uint8 b;
+    bool color_switch_flag;
+
 };
 
 #endif

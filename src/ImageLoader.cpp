@@ -1,5 +1,14 @@
 #include "ImageLoader.h"
 
+ImageLoader::ImageLoader() : r(0), g(0), b(0), img_idx(0),
+                color_switch_flag(false) {
+    init();
+}
+
+ImageLoader::~ImageLoader() {
+    close();
+}
+
 bool ImageLoader::init() {
     // Initialize SDL
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -57,21 +66,16 @@ void ImageLoader::loadTexturesFromDir() {
     }
 }
 
-void ImageLoader::renderImage() {
-    if (textures.empty()) {
-        std::cout << "No textures available for rendering!" << std::endl;
-        return;
-    }
-
-    if (!textures[img_idx]->isLoaded()) {
+void ImageLoader::renderTexture(Texture* texture) {
+    if (!texture->isLoaded()) {
         std::cout << "Texture is null during rendering!" << std::endl;
         return;
     }
     std::cout << "rendered\n";
 
     SDL_RenderClear(renderer);
-    textures[img_idx]->render(renderer, 0, 0);
-    SDL_RenderPresent(renderer);
+    texture->render(renderer, 0, 0);
+    //SDL_RenderPresent(renderer);
 }
 
 void ImageLoader::handleInput() {
@@ -89,7 +93,15 @@ void ImageLoader::handleInput() {
 
             std::cout << img_idx << std::endl;
             img_idx = (img_idx + textures.size()) % textures.size(); // keeps bounds of vector correct
-            renderImage();
+            if (color_switch_flag) {
+                textures[img_idx]->setColor(r, g, b);
+                std::cout << "r: " << (int)r << " g: " << (int)g << " b: " << (int)b << std::endl;
+            }
+            else {
+                textures[img_idx]->setColor(255, 255, 255);
+            }
+            renderTexture(textures[img_idx]);
+            SDL_RenderPresent(renderer);
         }
     }
 }
@@ -102,6 +114,33 @@ void ImageLoader::handleKeyEvent(SDL_Event& e) {
                 break;
             case SDLK_LEFT:
                 img_idx--;
+                break;
+            case SDLK_q:
+                r += 32;
+                break;
+            case SDLK_w:
+                g += 32;
+                break;
+            case SDLK_e:
+                b += 32;
+                break;
+            case SDLK_a:
+                r -= 32;
+                break;
+            case SDLK_s:
+                g -= 32;
+                break;
+            case SDLK_d:
+                b -= 32;
+                break;
+            case SDLK_c:
+                color_switch_flag = !color_switch_flag;
+                if (color_switch_flag) {
+                    std::cout << "Color mode enabled" << std::endl;
+                }
+                else {
+                    std::cout << "Color mode disabled" << std::endl;
+                }
                 break;
         }
     }

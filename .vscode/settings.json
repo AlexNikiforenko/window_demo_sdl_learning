@@ -130,6 +130,11 @@
     "stop_token": "cpp",
     "text_encoding": "cpp",
     "thread": "cpp",
-    "cinttypes": "cpp"
+    "cinttypes": "cpp",
+    "codecvt": "cpp",
+    "fstream": "cpp",
+    "iomanip": "cpp",
+    "numbers": "cpp",
+    "semaphore": "cpp"
   }
 }
