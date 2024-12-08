@@ -1,7 +1,6 @@
 #include "ImageLoader.h"
 
-ImageLoader::ImageLoader() : r(0), g(0), b(0), img_idx(0),
-                color_switch_flag(false) {
+ImageLoader::ImageLoader() : img_idx(0) {
     init();
 }
 
@@ -61,6 +60,7 @@ void ImageLoader::loadTexturesFromDir() {
             continue;
         }
 
+        texture->setBlendMode(SDL_BLENDMODE_BLEND);
         textures.push_back(texture);
         std::cout << path << " was loaded" << std::endl;
     }
@@ -74,7 +74,7 @@ void ImageLoader::renderTexture(Texture* texture) {
     std::cout << "rendered\n";
 
     SDL_RenderClear(renderer);
-    texture->render(renderer, 0, 0);
+    texture->render(renderer, 0, 0, nullptr, render_state.degrees, nullptr, render_state.flipType);
     //SDL_RenderPresent(renderer);
 }
 
@@ -93,13 +93,15 @@ void ImageLoader::handleInput() {
 
             std::cout << img_idx << std::endl;
             img_idx = (img_idx + textures.size()) % textures.size(); // keeps bounds of vector correct
-            if (color_switch_flag) {
-                textures[img_idx]->setColor(r, g, b);
-                std::cout << "r: " << (int)r << " g: " << (int)g << " b: " << (int)b << std::endl;
+            if (render_state.color_switch_flag) {
+                textures[img_idx]->setColor(render_state.r, render_state.g, render_state.b);
+                std::cout << "r: " << (int)render_state.r << " g: " << (int)render_state.g << " b: " << (int)render_state.b << std::endl;
             }
             else {
                 textures[img_idx]->setColor(255, 255, 255);
             }
+            textures[img_idx]->setAlpha(render_state.a);
+            std::cout << "a: " << (int)render_state.a << std::endl;
             renderTexture(textures[img_idx]);
             SDL_RenderPresent(renderer);
         }
@@ -109,38 +111,74 @@ void ImageLoader::handleInput() {
 void ImageLoader::handleKeyEvent(SDL_Event& e) {
     if(e.type == SDL_KEYDOWN) {
         switch (e.key.keysym.sym) {
+            // Image changing
             case SDLK_RIGHT:
                 img_idx++;
                 break;
             case SDLK_LEFT:
                 img_idx--;
                 break;
+            // Color moding
             case SDLK_q:
-                r += 32;
+                render_state.r += 32;
                 break;
             case SDLK_w:
-                g += 32;
+                render_state.g += 32;
                 break;
             case SDLK_e:
-                b += 32;
+                render_state.b += 32;
                 break;
             case SDLK_a:
-                r -= 32;
+                render_state.r -= 32;
                 break;
             case SDLK_s:
-                g -= 32;
+                render_state.g -= 32;
                 break;
             case SDLK_d:
-                b -= 32;
+                render_state.b -= 32;
                 break;
             case SDLK_c:
-                color_switch_flag = !color_switch_flag;
-                if (color_switch_flag) {
+                render_state.color_switch_flag = !render_state.color_switch_flag;
+                if (render_state.color_switch_flag) {
                     std::cout << "Color mode enabled" << std::endl;
                 }
                 else {
                     std::cout << "Color mode disabled" << std::endl;
                 }
+                break;
+            // Blending
+            case SDLK_r:
+                if (render_state.a + 32 > 255) {
+                    render_state.a = 255;
+                }
+                else {
+                    render_state.a += 32;
+                }
+                break;
+            case SDLK_f:
+                if (render_state.a - 32 < 0) {
+                    render_state.a = 0;
+                }
+                else {
+                    render_state.a -= 32;
+                }
+                break;
+            // Flipping
+            case SDLK_h:
+                render_state.degrees -= 60;
+                break;
+            case SDLK_j:
+                render_state.degrees += 60;
+                break;
+            case SDLK_y:
+                render_state.flipType = SDL_FLIP_HORIZONTAL;
+                break;
+            case SDLK_u:
+                render_state.flipType = SDL_FLIP_NONE;
+                render_state.degrees = 0;
+                break;
+            case SDLK_i:
+                render_state.flipType = SDL_FLIP_VERTICAL;
                 break;
         }
     }

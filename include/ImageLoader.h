@@ -9,6 +9,7 @@
 #include <string>
 
 #include "Texture.h"
+#include "RenderState.h"
 
 class ImageLoader {
 public:
@@ -35,11 +36,8 @@ private:
 
     std::vector<Texture*> textures;
     int img_idx;
-    Uint8 r;
-    Uint8 g;
-    Uint8 b;
-    bool color_switch_flag;
 
+    RenderState render_state;
 };
 
 #endif

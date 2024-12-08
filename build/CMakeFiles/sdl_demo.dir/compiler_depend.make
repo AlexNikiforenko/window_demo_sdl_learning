@@ -992,6 +992,7 @@ CMakeFiles/sdl_demo.dir/src/ImageLoader.cpp.o: /Users/alexandernikiforenko/Devel
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
   /Users/alexandernikiforenko/Developer/Projects/window_demo/include/ImageLoader.h \
+  /Users/alexandernikiforenko/Developer/Projects/window_demo/include/RenderState.h \
   /Users/alexandernikiforenko/Developer/Projects/window_demo/include/Texture.h \
   /opt/homebrew/include/SDL2/SDL.h \
   /opt/homebrew/include/SDL2/SDL_assert.h \
@@ -3059,6 +3060,7 @@ CMakeFiles/sdl_demo.dir/src/main.cpp.o: /Users/alexandernikiforenko/Developer/Pr
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/16/include/stdint.h \
   /Users/alexandernikiforenko/Developer/Projects/window_demo/include/ImageLoader.h \
+  /Users/alexandernikiforenko/Developer/Projects/window_demo/include/RenderState.h \
   /Users/alexandernikiforenko/Developer/Projects/window_demo/include/Texture.h \
   /opt/homebrew/include/SDL2/SDL.h \
   /opt/homebrew/include/SDL2/SDL_assert.h \
@@ -3178,6 +3180,8 @@ CMakeFiles/sdl_demo.dir/src/main.cpp.o: /Users/alexandernikiforenko/Developer/Pr
 /opt/homebrew/include/SDL2/SDL_blendmode.h:
 
 /opt/homebrew/include/SDL2/SDL.h:
+
+/Users/alexandernikiforenko/Developer/Projects/window_demo/include/RenderState.h:
 
 /Users/alexandernikiforenko/Developer/Projects/window_demo/include/ImageLoader.h:
 

@@ -41,7 +41,18 @@ void Texture::setColor(Uint8 red, Uint8 green, Uint8 blue) {
     SDL_SetTextureColorMod(texture, red, green, blue);
 }
 
-void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip) {
+void Texture::setBlendMode(SDL_BlendMode blending) {
+    // Set blending function
+    SDL_SetTextureBlendMode(texture, blending);
+}
+
+void Texture::setAlpha(Uint8 alpha) {
+    // Modulate texture alpha
+    SDL_SetTextureAlphaMod(texture, alpha);
+}
+
+void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip, double angle,
+                SDL_Point* center, SDL_RendererFlip flip) {
     SDL_Rect renderQuad = {x, y, width, height};
 
     if (clip) {
@@ -49,7 +60,7 @@ void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip) {
         renderQuad.h = clip->h;
     }
 
-    if (SDL_RenderCopy(renderer, texture, clip, &renderQuad) < 0) {
+    if (SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle, center, flip) < 0) {
         std::cout << "Unable to render copy! SDL Error: " << SDL_GetError() << std::endl;
     }
 }

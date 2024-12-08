@@ -15,7 +15,13 @@ public:
     bool isLoaded();
 
     void setColor(Uint8 red, Uint8 green, Uint8 blue);
-    void render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip = nullptr);
+    void setBlendMode(SDL_BlendMode blending);
+    void setAlpha(Uint8 alpha);
+
+    //void render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip = nullptr);
+    void render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip = NULL, double angle = 0.0,
+                SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
+
     void free();
 
     int getWidth();
